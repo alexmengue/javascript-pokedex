@@ -64,6 +64,7 @@ main {
     outline: none;
     padding: 4%;
     width: 100%;
+    height: 40px;
 }
 
 .buttons {
@@ -88,7 +89,44 @@ main {
     width: 50%;
 }
 
-.button:active {
+.button:active, .btn-shiny:active {
     box-shadow: inset -4px 4px 0 #222222;
     font-size: 0.9rem;
+}
+
+.btn-shiny {
+    background-color: #444444;
+    border: 2px solid #000000;
+    border-radius: 5px;
+    box-shadow: -2px 3px 0 #222222, -4px 6px 0 #000000;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 600;
+    height: 30px;
+    left: 30%;
+    position: absolute;
+    top: 75%;
+    width: 30%;
+}
+
+@media (max-width: 360px) {
+    .button {
+        height: 20px;
+        line-height: 0%;
+    }
+
+    .btn-shiny {
+        height: 20px;
+        top: 77%;
+    }
+
+    .input__search {
+        height: 30px;
+    }
+}
+
+@media (max-width: 280px) {
+    .btn-shiny {
+        font-size: 12px;
+    }
 }

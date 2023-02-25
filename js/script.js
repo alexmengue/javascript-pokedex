@@ -5,10 +5,13 @@ const pokemonImage = document.querySelector('.pokemon__image');
 const form = document.querySelector('.form');
 const input = document.querySelector('.input__search');
 
-const buttonPrev = document.querySelector('.btn-prev')
-const buttonNext = document.querySelector('.btn-next')
+const buttonPrev = document.querySelector('.btn-prev');
+const buttonNext = document.querySelector('.btn-next');
+
+const showShiny = document.querySelector('.btn-shiny');
 
 let searchPokemon = 1;
+let isShiny = false;
 
 const fetchPokemon = async (pokemon) => {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`);
@@ -19,7 +22,7 @@ const fetchPokemon = async (pokemon) => {
     }    
 }
 
-const renderPokemon = async (pokemon) => {
+const renderPokemon = async (pokemon, isShiny) => {
     pokemonName.innerHTML = 'Loading...';
     pokemonNumber.innerHTML = '';
 
@@ -28,7 +31,13 @@ const renderPokemon = async (pokemon) => {
     if (data && data.id < 650) {
         pokemonName.innerHTML = data.name;
         pokemonNumber.innerHTML = data.id;
-        pokemonImage.src = data['sprites']['versions']['generation-v']['black-white']['animated']['front_default'];
+
+        if (isShiny === true) {
+            pokemonImage.src = data['sprites']['versions']['generation-v']['black-white']['animated']['front_shiny'];
+        } else {
+            pokemonImage.src = data['sprites']['versions']['generation-v']['black-white']['animated']['front_default'];
+        }
+        
         pokemonImage.style.display = 'block';
 
         searchPokemon = data.id;
@@ -45,21 +54,33 @@ const renderPokemon = async (pokemon) => {
 
 form.addEventListener('submit', (event) => {
     event.preventDefault();
-    renderPokemon(input.value.toLowerCase());
+    renderPokemon(input.value.toLowerCase(), isShiny);
 });
 
 buttonPrev.addEventListener('click', () => {
     if (searchPokemon > 1) {
         searchPokemon--;
-        renderPokemon(searchPokemon);
+        renderPokemon(searchPokemon, isShiny);
     }
 });
 
 buttonNext.addEventListener('click', () => {
     if (searchPokemon < 649) {
         searchPokemon++;
-        renderPokemon(searchPokemon);
+        renderPokemon(searchPokemon, isShiny);
     }
+});
+
+showShiny.addEventListener('click', () => {
+    isShiny = !isShiny;
+
+    if (isShiny) {
+        showShiny.innerHTML = 'Show normal'
+    } else {
+        showShiny.innerHTML = 'Show shiny'
+    }
+    
+    renderPokemon(searchPokemon, isShiny);
 });
 
 renderPokemon(searchPokemon);
